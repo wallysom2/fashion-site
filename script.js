@@ -1,8 +1,12 @@
 const FASHION_API = "https://mock-api.driven.com.br/api/v4/shirts-api/shirts";
 let contador = 0;
+let tipoModelo= null;
+let tipoGola= null;
+let tipoTecido= null;
 
-function selecionarModelo(modeloClicado) {
+function selecionarModelo(modeloClicado,tipoModeloEscolhido) {
   const modelo = document.querySelector(".selecionado");
+  tipoModelo = tipoModeloEscolhido;
   if (modelo !== null) {
     modelo.classList.toggle("selecionado");
     contador -= 1
@@ -12,8 +16,9 @@ function selecionarModelo(modeloClicado) {
   liberarBotao()
 }
 
-function selecionarGola(golaClicado) {
+function selecionarGola(golaClicado, tipoGolaEscolhido) {
   const modelo1 = document.querySelector(".selecionado1");
+  tipoGola = tipoGolaEscolhido;
   if (modelo1 !== null) {
     modelo1.classList.toggle("selecionado1");
     contador -= 1
@@ -23,8 +28,9 @@ function selecionarGola(golaClicado) {
   liberarBotao()
 }
 
-function selecionarTecido(tecidoClicado) {
+function selecionarTecido(tecidoClicado, tipoTecidoEscolhido) {
   const modelo1 = document.querySelector(".selecionado2");
+  tipoTecido = tipoTecidoEscolhido;
   if (modelo1 !== null) {
     modelo1.classList.toggle("selecionado2");
     contador -= 1
@@ -34,35 +40,24 @@ function selecionarTecido(tecidoClicado) {
   liberarBotao()
 }
 
-function urlImagem() {
-  const linkImagem = document.querySelector(".receberLink").value;
-  let url = linkImagem;
-  if (isValidImageURL(url)) {
-    alert("Essa url é de uma imagem")
-    console.log(isValidImageURL(url))
-  } else {
-    alert("Deu ruim !!! Essa url não é de uma imagem")
-  }
-}
+
 
 function liberarBotao() {
+  const linkPreencido = document.querySelector (".receberLink")
 
-if (contador >=3) {
+if (contador >=3 && linkPreencido.value !== "") {
     const botaoVerde = document.querySelector(".botao")
     botaoVerde.classList.add("botaoLiberado")
-  } 
-}
+  } }
 
-function isValidImageURL(str) {
-  if (typeof str !== 'string') return false;
-  return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
-}
+
 
 function obterBlusas () {
   const promise = axios.get (`${FASHION_API}`)
   promise.then (resposta => {
     console.log (resposta.data)
     renderizarBlusas (resposta.data)
+    dados = resposta.data;
   });
   promise.catch (erro => {
     console.error (erro.response);
@@ -87,4 +82,49 @@ function renderizarBlusas(blusas) {
         `
   }) }
 
+  function postBlusaFeita (){
+    const promise = axios.post(
+      `${FASHION_API}`,
+      {
+        "model": tipoModelo,
+        "neck": tipoGola,
+        "material": tipoTecido,
+        "image": urlDigitada,
+        "owner": nome,
+        "author": nome
+      });
+      promise.then (resposta => {
+        console.log (resposta.data)
+        renderizarBlusas (dados);
+      });
+      promise.catch (erro => {
+        console.error (erro.response);
+        const qualErro = erro.response;
+        alert(`Xiii! Deu ruim na hora de receber mensagens! 
+               O erro foi: ${qualErro}`);
+      })
+  }
+
+ //let nome = prompt ("Qual o seu nome?  ")
   obterBlusas ();
+ 
+
+
+  /*
+  function urlImagem() {
+  const url = document.querySelector(".receberLink").value;
+  urlDigitada = url;
+  if (isValidImageURL(url)) {
+    console.log(isValidImageURL(url))
+    return true
+  } else {
+    console.log(urlDigitada)
+    return false
+  } 
+}
+
+function isValidImageURL(str) {
+  if (typeof str !== 'string') return false;
+  return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
+}
+*/
