@@ -3,6 +3,8 @@ let contador = 0;
 let tipoModelo= null;
 let tipoGola= null;
 let tipoTecido= null;
+let dados;
+let urlDigitada = null;
 
 function selecionarModelo(modeloClicado,tipoModeloEscolhido) {
   const modelo = document.querySelector(".selecionado");
@@ -40,24 +42,34 @@ function selecionarTecido(tecidoClicado, tipoTecidoEscolhido) {
   liberarBotao()
 }
 
-
-
 function liberarBotao() {
+  let liberar = "não"
   const linkPreencido = document.querySelector (".receberLink")
+  urlDigitada = linkPreencido.value;
 
-if (contador >=3 && linkPreencido.value !== "") {
-    const botaoVerde = document.querySelector(".botao")
-    botaoVerde.classList.add("botaoLiberado")
-  } }
+  if (linkPreencido.value.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gmi) !== null){
+      liberar = "sim"
+      console.log (liberar)
+  } else {
+   const naoPodeClicar = document.querySelector (".botaoClicavel")
+   naoPodeClicar.innerHTML = `<button class="botao">Confirmar pedido</button>`
+   const linkInvalido = document.querySelector (".receberLink")
+   linkInvalido.value ="";
+  }
 
-
+if (contador >=3 && liberar=="sim") {
+  const botaoPodeClicar = document.querySelector (".botaoClicavel")
+    botaoPodeClicar.innerHTML = `<button class="botao" onclick="postBlusaFeita()"> Confirmar pedido</button>`  
+  const botaoAzul = document.querySelector(".botao")
+    botaoAzul.classList.add("botaoLiberado") 
+  } 
+}
 
 function obterBlusas () {
   const promise = axios.get (`${FASHION_API}`)
   promise.then (resposta => {
     console.log (resposta.data)
     renderizarBlusas (resposta.data)
-    dados = resposta.data;
   });
   promise.catch (erro => {
     console.error (erro.response);
@@ -66,6 +78,7 @@ function obterBlusas () {
 }
 
 function renderizarBlusas(blusas) {
+  dataBlusas = blusas
   const mostrarBlusas = document.querySelector(".ultimosPedidos");
   mostrarBlusas.innerHTML = "";
   blusas.forEach( blusa => {
@@ -94,37 +107,21 @@ function renderizarBlusas(blusas) {
         "author": nome
       });
       promise.then (resposta => {
+       // alert("Encomenda confirmada  =)"); 
         console.log (resposta.data)
-        renderizarBlusas (dados);
+        obterBlusas ();
+        console.log (resposta.data)
       });
       promise.catch (erro => {
         console.error (erro.response);
-        const qualErro = erro.response;
-        alert(`Xiii! Deu ruim na hora de receber mensagens! 
-               O erro foi: ${qualErro}`);
+        alert("Ops, não conseguimos processar sua encomenda"); 
       })
   }
 
- //let nome = prompt ("Qual o seu nome?  ")
+ let nome = prompt ("Qual o seu nome?  ")
   obterBlusas ();
  
+  
 
 
-  /*
-  function urlImagem() {
-  const url = document.querySelector(".receberLink").value;
-  urlDigitada = url;
-  if (isValidImageURL(url)) {
-    console.log(isValidImageURL(url))
-    return true
-  } else {
-    console.log(urlDigitada)
-    return false
-  } 
-}
-
-function isValidImageURL(str) {
-  if (typeof str !== 'string') return false;
-  return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
-}
-*/
+ 
