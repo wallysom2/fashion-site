@@ -8,7 +8,7 @@
     <title>Fashion Driven</title>
 
     <!-- favicon -->
-    <link href="favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="css/favicon.ico" rel="icon" type="image/x-icon"/>
 
     <!-- fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
                 <p>Escolha o modelo</p>
                 <div class="opcoesModelo opcoes ">
                     <div class="tshirt possibilidades">
-                        <div class="imgBack" onclick="selecionarModelo(this, 't-shirt')">
+                        <div class="imgBack" onclick="selecionarModelo(this,'t-shirt')">
                             <img src="fashion/tshirt.png" alt="Imagem tshirt">
                         </div>
                         <span>T-shirt</span>
@@ -105,7 +105,8 @@
             </div>
             <div class="imagemDeReferencia">
                 <p>Imagem de referência</p>
-                <input type="text" placeholder="Insira o link de uma imagem" onChange="liberarBotao()" class="receberLink">
+                <input type="text" placeholder="Insira o link de uma imagem" onChange="liberarBotao()"
+                    class="receberLink">
             </div>
             <div class="botaoClicavel"><button class="botao"> Confirmar pedido</button></div>
 
@@ -120,13 +121,13 @@
     <footer>
         <p>Ultimos pedidos</p>
         <div class="rolagem">
-        <div class="ultimosPedidos">
-            <div class="ultimosPedidosCada">
-                <img src="fashion/Blusa1.png" alt="Blusa Roxa">
-                <div><span>Criador: </span>Agata</div>
+            <div class="ultimosPedidos">
+                <div class="ultimosPedidosCada">
+                    <img src="fashion/Blusa1.png" alt="Blusa Roxa">
+                    <div><span>Criador: </span>Agata</div>
+                </div>
             </div>
         </div>
-    </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
