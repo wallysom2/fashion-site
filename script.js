@@ -88,7 +88,7 @@ function renderizarBlusas(blusas) {
 
 
     mostrarBlusas.innerHTML += `
-      <div class="ultimosPedidosCada">
+      <div class="ultimosPedidosCada" onclick="blusaClicada(${id})">
       <img src="${imagem}" alt="Blusa">
       <div><span>Criador: </span>${autor}</div>
       </div>
@@ -117,6 +117,34 @@ function postBlusaFeita() {
     alert("Ops, não conseguimos processar sua encomenda");
   })
 }
+function blusaClicada (bl){
+  // confirm ("Tem certeza que deseja fazer o pedido? ")
+   //postBlusaFeita()
+   console.log (bl)
+   let result = dataBlusas.filter(dev => dev.id == bl);
+   console.log(result);
+ 
+   const promise = axios.post(
+     `${FASHION_API}`, {
+       "model": result[0].model,
+       "neck": result[0].neck,
+       "material": result[0].material,
+       "image": result[0].image,
+       "owner": result[0].owner,
+       "author": result[0].owner
+     });
+   promise.then(resposta => {
+     // alert("Encomenda confirmada  =)"); 
+     console.log(resposta.data)
+     obterBlusas();
+     console.log(resposta.data)
+    // alert ("Seu pedido foi confirmado =)")
+   });
+   promise.catch(erro => {
+     console.error(erro.response);
+     alert("Ops, não conseguimos processar sua encomenda");
+   })
+ }
 
 let nome = prompt("Qual o seu nome?  ")
 obterBlusas();
